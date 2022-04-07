@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <!-- 
+        1:scripte setTimeout2个
+        
+     -->
+    <script>
+        // 浏览器加载时间是 16.7
+        //  0ms 1ms 浏览器还没有加载完毕。相当于 16ms以为程序时间相当于一样。所以优先顺序 ，先执行上面在执行下面
+        // 0.1ms的时间间隔，相当于相同时间
+        setTimeout(function(){
+            console.log('8888');
+        },17)
+        var a = 123;
+        console.log('1111')
+
+
+        setTimeout(function(){
+            console.log('222222');
+            p.then(function(){
+                console.log('6666');
+            })
+            console.log('7777');
+        },16.7)
+
+        var p = new Promise(function(resolve,reject){
+            console.log('444');
+            resolve()
+
+        })
+        p.then(function(){
+            console.log('555');
+        })
+        console.log('33333');
+
+        // 程序输入
+        // 111  444  333  555 222
+
+        // 1:执行script中所有同步代码
+        
+        // 准备
+        // stackEack = []
+        // 第一轮
+        // script (宏任务) 中所有同步代码  ，推入 stackEack
+        // 111 444 3333 宏任务结束  推出 stackEack
+        // 找微任务:promise  推入 stackEack
+        // 555         推出 stackEack
+        // -------本轮结束 执行栈空 -----
+        // 第二轮eventLop
+        // 执行宏任务，setTimOut的回调函数中的同步代码
+        // 222 666
+        // 找微任务:promise.then
+        // 777 
+        // ----本轮结束 ------
+        // 第三轮：eventLop
+        // 执行setTimeOut中回调函数 中所有同步代码。时间17
+        // 888
+        // 没有微任务
+        // ------本轮结束 程序结束----
+
+    </script>
+</body>
+</html>
